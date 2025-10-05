@@ -1,0 +1,8 @@
+  * The images folder inside the assets folder is designated for storing images such as logos, icons, and other media assets used in the application. 
+  * Do not store other types of images (e.g., user-uploaded images or large media files) in this folder. Keep it organized with only app-specific images to maintain structure and scalability.
+
+
+
+
+
+

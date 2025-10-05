@@ -1,0 +1,2 @@
+The context folder is for managing global state using React Context API, enabling data sharing across components without prop drilling.
+Do not place unrelated logic or files here; reserve this folder strictly for context-related functionality such as providers and custom hooks for state management.

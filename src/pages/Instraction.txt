@@ -1,0 +1,2 @@
+The pages folder is for storing top-level components or screens that correspond to distinct routes in the application. Each file here typically represents a page in the app.
+Do not place reusable components or business logic directly in this folder; keep it reserved for defining the overall structure of individual pages.

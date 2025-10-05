@@ -1,0 +1,2 @@
+The state folder (or store) is used for managing the global state of the application, typically with a state management library like Redux or Context API.
+Do not mix UI components, services, or other unrelated business logic in this folder; it should only include files related to managing the application's global state.

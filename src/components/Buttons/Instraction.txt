@@ -1,0 +1,3 @@
+* The Buttons folder specifically for button components used across the entire project.
+* Do not include other types of components, such as forms or modals, in the Buttons folder;
+* keep it focused solely on reusable button components.

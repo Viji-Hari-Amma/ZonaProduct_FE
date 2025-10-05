@@ -1,0 +1,2 @@
+The mainroutes folder is for defining the primary routes that structure the core navigation of the application.
+Do not include nested or feature-specific routes here; keep it focused on high-level, main entry points.

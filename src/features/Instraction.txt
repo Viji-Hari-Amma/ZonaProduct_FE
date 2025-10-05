@@ -1,0 +1,2 @@
+The features folder is for encapsulating specific application functionality, such as authentication, user profiles, or order management, in a modular and reusable manner.
+Do not mix unrelated code or components here; ensure each feature is self-contained with its relevant files (e.g., reducers, actions, and APIs) within a subfolder.

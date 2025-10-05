@@ -1,0 +1,3 @@
+ * The Header folder is we can use .
+ * Do not include other types of components, such as footers or modals, in the Header folder; 
+* it should only contain header-related elements.

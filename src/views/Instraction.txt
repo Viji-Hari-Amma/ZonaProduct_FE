@@ -1,0 +1,4 @@
+The views folder contains web-specific assets or components that are associated with the pages or views displayed in the browser. It includes things like images, videos, or components specific to the user interface.
+
+Do not mix generic UI components or features with assets or pages that are specific to your app's logic. Keep assets that belong to the specific view inside this folder and ensure proper organization by separating it from the general components or assets folders.
+

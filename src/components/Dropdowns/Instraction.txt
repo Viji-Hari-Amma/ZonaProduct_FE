@@ -1,0 +1,3 @@
+ * The Dropdowns folder is specifically for dropdown components used across the entire project.
+ * Do not include other types of components, such as buttons or modals, in the Dropdowns folder;
+ * keep it focused solely on reusable dropdown components.

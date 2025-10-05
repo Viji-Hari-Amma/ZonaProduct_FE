@@ -1,0 +1,8 @@
+* The Footer folder inside the components folder is dedicated solely to footer components used across the entire project.
+* Do not include other types of components, such as headers or modals, in the Footer folder; 
+* it should only contain footer-related elements.
+
+
+
+
+

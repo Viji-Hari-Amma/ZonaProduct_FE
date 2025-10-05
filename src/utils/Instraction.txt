@@ -1,0 +1,3 @@
+The utils folder is for utility functions or helper functions that provide reusable code for various parts of your application, such as date formatting, string manipulation, or data validation.
+
+Do not place business logic or feature-specific code inside this folder; it should be reserved for generic, reusable functions that can be utilized across different components or features of the application.

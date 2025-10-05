@@ -1,0 +1,2 @@
+* The styles folder should be used exclusively for storing style-related files such as custom CSS or SCSS files.
+* Do not store non-style files like images, fonts, or media in this folder to ensure proper organization and separation of concerns.

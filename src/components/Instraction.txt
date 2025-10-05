@@ -1,0 +1,7 @@
+* The components folder should be used to store reusable UI elements like buttons, dropdowns, headers, sidebars, etc.
+* Do not include page-specific components or feature-specific logic in this folder; reserve it for general-purpose UI components to maintain modularity.
+
+
+
+
+

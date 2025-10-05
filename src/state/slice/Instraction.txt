@@ -1,0 +1,2 @@
+The slice folder inside the state folder is where you define the individual slices of your application's state using tools like Redux Toolkit. Each slice typically represents a specific feature or functionality (e.g., authentication, user profile, etc.).
+Do not place unrelated state management logic in this folder; each slice should be focused on a single domain or feature of the application to maintain modularity and clarity.

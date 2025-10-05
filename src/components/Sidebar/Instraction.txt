@@ -1,0 +1,2 @@
+The Sidebar folder is used for dedicated to all sidebar-related components, such as the sidebar menu, item lists, or sub-components of the sidebar.
+Do not place unrelated components (like buttons or headers) in the Sidebar folder to maintain clear organization and avoid confusion.

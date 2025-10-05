@@ -1,0 +1,1 @@
+//  The asset folder inside the fonts folder is for storing custom font files (e.g., Google Fonts, Font Awesome) to ensure consistent typography across our project and to easily manage and reference fonts in our styles

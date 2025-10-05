@@ -1,0 +1,2 @@
+The layouts folder is used to store layout components like headers, footers, or wrappers that define the overall structure of pages or sections of the application.
+Do not include feature-specific components or logic; layouts should only focus on structuring the visual and functional framework of the application.

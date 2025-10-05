@@ -1,0 +1,2 @@
+The subHeader folder is used to specifically for components related to sub-headers, such as secondary navigation bars or contextual titles.
+Do not include unrelated components (like buttons or sidebars) in the subHeader folder to ensure clean and modular organization.

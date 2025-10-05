@@ -1,0 +1,2 @@
+The services folder is for managing API calls and backend communication logic, ensuring separation of concerns in the application.
+Do not include UI components, utilities, or state management code here; keep it strictly for service-related functionalities.

@@ -1,0 +1,6 @@
+Purpose of the Modals Component
+The Modals component provides a reusable and customizable interface for creating modal dialogs or pop-ups.
+It is designed to display content such as forms, confirmations, or additional information without navigating away from the current page.
+* The Models folder inside the components folder is reserved exclusively for modal components used throughout the project.
+* Do not include other types of components, such as buttons or dropdowns, in the Models folder; 
+* it should only contain modal-related elements.

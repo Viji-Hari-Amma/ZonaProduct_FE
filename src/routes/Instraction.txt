@@ -1,0 +1,3 @@
+The nestedroutes folder is for defining sub-routes or child routes related to specific features or sections within the app.
+Do not include unrelated or high-level routes here;
+ keep it focused on feature-specific routing logic.

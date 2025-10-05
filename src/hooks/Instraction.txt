@@ -1,0 +1,7 @@
+The hooks folder is designated for custom React hooks that encapsulate reusable logic, such as data fetching or state management, to keep components clean and focused.
+Do not store unrelated logic or component-specific hooks here; ensure hooks are reusable across multiple components or features.
+
+
+
+
+
