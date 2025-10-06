@@ -308,15 +308,12 @@ export const Orders = () => {
       // Get current user email for matching
       const currentUserEmail = localStorage.getItem("userEmail");
 
-      console.log("Fetched reviews:", reviews);
-      console.log("Current user email:", currentUserEmail);
 
       // Find the user's review for this product by email
       const userReview = Array.isArray(reviews)
         ? reviews.find((review) => review.user_email === currentUserEmail)
         : null;
 
-      console.log("Found user review:", userReview);
 
       // Set selected review data
       setSelectedReview({
@@ -360,7 +357,6 @@ export const Orders = () => {
   // Handle Review Submission - FIXED VERSION
   const handleReviewSubmit = async (reviewData) => {
     try {
-      console.log("Submitting review:", reviewData);
 
       if (!reviewData.productId) {
         toast.error("Product information is missing");
@@ -412,7 +408,6 @@ export const Orders = () => {
     }
 
     try {
-      console.log("Deleting review:", selectedReview.reviewId);
 
       await deleteReview(selectedReview.product.id, selectedReview.reviewId);
       toast.success("Review deleted successfully!");

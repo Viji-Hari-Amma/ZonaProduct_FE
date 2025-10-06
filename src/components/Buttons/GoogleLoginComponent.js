@@ -29,7 +29,6 @@ const GoogleLoginComponent = ({ from = "/" }) => {
         profilePic: profile_pic || "",
       });
 
-      console.log("Google login response:", result.data.email);
       toast.success("Google login successful");
 
       // ✅ FIXED: Check for buy now data after login
