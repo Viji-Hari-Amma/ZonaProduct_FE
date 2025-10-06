@@ -3,11 +3,13 @@ import { toast } from "react-toastify";
 import { FaPlus, FaTrash, FaSave } from "react-icons/fa";
 import {
   bulkAddSizes,
+  bulkReplaceSizes,
   deleteSize,
   getProductSizes,
 } from "../../../../services/productApi/productSize/productSize";
 
-const ProductSizes = ({ productId, onSectionComplete }) => {
+const ProductSizes = ({ productId, onSectionComplete, isEditing = false }) => {
+  // ADD isEditing prop
   const [sizes, setSizes] = useState([]);
   const [newSize, setNewSize] = useState({
     label: "",
@@ -85,10 +87,19 @@ const ProductSizes = ({ productId, onSectionComplete }) => {
         delivery_charge: size.delivery_charge,
       }));
 
-      await bulkAddSizes(productId, sizesData);
-      toast.success("Sizes saved successfully");
+      // USE BULK REPLACE FOR EDITING, BULK ADD FOR CREATING
+      if (isEditing) {
+        await bulkReplaceSizes(productId, sizesData);
+        toast.success("Sizes updated successfully");
+      } else {
+        await bulkAddSizes(productId, sizesData);
+        toast.success("Sizes saved successfully");
+      }
+
       fetchSizes(); // Refresh to get actual IDs
-      onSectionComplete(); // This will close the popup and complete the process
+      if (onSectionComplete) {
+        onSectionComplete(); // Only call if provided (for creation flow)
+      }
     } catch (error) {
       toast.error("Failed to save sizes");
       console.error("Error saving sizes:", error);
@@ -205,7 +216,7 @@ const ProductSizes = ({ productId, onSectionComplete }) => {
       <div className="space-y-3 max-h-60 overflow-y-auto">
         {sizes.map((size, index) => (
           <div
-            key={size.id}
+            key={size.id || `temp-${index}`}
             className="grid grid-cols-12 gap-2 items-center p-3 bg-gray-50 rounded-lg border"
           >
             <div className="col-span-2">
@@ -281,11 +292,13 @@ const ProductSizes = ({ productId, onSectionComplete }) => {
             <div className="col-span-1">
               <button
                 type="button"
-                onClick={() =>
-                  size.id > 1000
-                    ? handleRemoveSize(index)
-                    : handleDeleteSize(size.id)
-                }
+                onClick={() => {
+                  if (size.id && size.id > 1000) {
+                    handleDeleteSize(size.id);
+                  } else {
+                    handleRemoveSize(index);
+                  }
+                }}
                 disabled={deletingId === size.id}
                 className="text-red-500 hover:text-red-700 p-2 transition-colors disabled:opacity-50 w-full"
               >
@@ -316,12 +329,12 @@ const ProductSizes = ({ productId, onSectionComplete }) => {
           {loading ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-              Saving...
+              {isEditing ? "Updating..." : "Saving..."}
             </>
           ) : (
             <>
               <FaSave className="mr-2" />
-              Save Sizes & Complete
+              {isEditing ? "Update Sizes" : "Save Sizes & Complete"}
             </>
           )}
         </button>

@@ -3,11 +3,17 @@ import { toast } from "react-toastify";
 import { FaPlus, FaTrash, FaSave } from "react-icons/fa";
 import {
   bulkAddIngredients,
+  bulkReplaceIngredients,
   deleteIngredient,
   listIngredients,
 } from "../../../../services/productApi/productIngredientsApi/productIngredientsApi";
 
-const ProductIngredients = ({ productId, onSectionComplete }) => {
+const ProductIngredients = ({
+  productId,
+  onSectionComplete,
+  isEditing = false,
+}) => {
+  // ADD isEditing prop
   const [ingredients, setIngredients] = useState([]);
   const [newIngredient, setNewIngredient] = useState("");
   const [loading, setLoading] = useState(false);
@@ -53,16 +59,23 @@ const ProductIngredients = ({ productId, onSectionComplete }) => {
 
     setLoading(true);
     try {
-      // FIX: Send proper format - array of objects with 'name' property
       const ingredientsData = ingredients.map((ing) => ({
         name: ing.name,
       }));
 
+      // USE BULK REPLACE FOR EDITING, BULK ADD FOR CREATING
+      if (isEditing) {
+        await bulkReplaceIngredients(productId, ingredientsData);
+        toast.success("Ingredients updated successfully");
+      } else {
+        await bulkAddIngredients(productId, ingredientsData);
+        toast.success("Ingredients saved successfully");
+      }
 
-      await bulkAddIngredients(productId, ingredientsData);
-      toast.success("Ingredients saved successfully");
       fetchIngredients(); // Refresh to get actual IDs
-      onSectionComplete(); // Move to next section
+      if (onSectionComplete) {
+        onSectionComplete(); // Only call if provided (for creation flow)
+      }
     } catch (error) {
       console.error("Error saving ingredients:", error);
       toast.error("Failed to save ingredients");
@@ -122,7 +135,7 @@ const ProductIngredients = ({ productId, onSectionComplete }) => {
       <div className="space-y-3 max-h-60 overflow-y-auto">
         {ingredients.map((ingredient, index) => (
           <div
-            key={ingredient.id}
+            key={ingredient.id || `temp-${index}`}
             className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border"
           >
             <input
@@ -137,11 +150,13 @@ const ProductIngredients = ({ productId, onSectionComplete }) => {
             />
             <button
               type="button"
-              onClick={() =>
-                ingredient.id > 1000
-                  ? handleRemoveIngredient(index)
-                  : handleDeleteIngredient(ingredient.id)
-              }
+              onClick={() => {
+                if (ingredient.id && ingredient.id > 1000) {
+                  handleDeleteIngredient(ingredient.id);
+                } else {
+                  handleRemoveIngredient(index);
+                }
+              }}
               disabled={deletingId === ingredient.id}
               className="text-red-500 hover:text-red-700 p-2 transition-colors disabled:opacity-50"
             >
@@ -163,12 +178,14 @@ const ProductIngredients = ({ productId, onSectionComplete }) => {
 
       {/* Save Button */}
       <div className="flex justify-between pt-4 border-t border-gray-200">
-        <button
-          onClick={onSectionComplete}
-          className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-        >
-          Skip for now
-        </button>
+        {onSectionComplete && (
+          <button
+            onClick={onSectionComplete}
+            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            Skip for now
+          </button>
+        )}
         <button
           onClick={handleSaveIngredients}
           disabled={loading || ingredients.length === 0}
@@ -177,12 +194,12 @@ const ProductIngredients = ({ productId, onSectionComplete }) => {
           {loading ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-              Saving...
+              {isEditing ? "Updating..." : "Saving..."}
             </>
           ) : (
             <>
               <FaSave className="mr-2" />
-              Save Ingredients & Continue
+              {isEditing ? "Update Ingredients" : "Save Ingredients & Continue"}
             </>
           )}
         </button>

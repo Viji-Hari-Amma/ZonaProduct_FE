@@ -34,3 +34,12 @@ export const deleteNutritionalFact = (productId, factId) =>
   axiosInstance.delete(
     `/Product/products/${productId}/nutritional-facts/${factId}/`
   );
+
+
+  export const bulkReplaceNutritionalFacts = async (productId, factsData) => {
+  const response = await axiosInstance.post(
+    `/Product/products/${productId}/nutritional-facts/bulk-replace/`,
+    factsData
+  );
+  return response;
+};

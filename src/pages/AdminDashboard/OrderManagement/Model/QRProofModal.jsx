@@ -26,10 +26,13 @@ const QRProofModal = ({
   const [adminNotes, setAdminNotes] = useState("");
   const [showDecisionForm, setShowDecisionForm] = useState(false);
 
-  // Find payment request for this order
-  const paymentRequest = paymentRequests?.find(
-    (pr) => pr.order_id === order?.id
-  );
+  // Safely find payment request for this order
+  const paymentRequest = React.useMemo(() => {
+    if (!paymentRequests || !Array.isArray(paymentRequests)) {
+      return null;
+    }
+    return paymentRequests.find((pr) => pr.order_id === order?.id);
+  }, [paymentRequests, order?.id]);
 
   useEffect(() => {
     if (isOpen && paymentRequest?.upi_proof_image_url) {

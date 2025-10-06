@@ -82,14 +82,35 @@ const OrdersTable = ({
     }
   }, [showQRProof]);
 
+  // In your OrdersTable component
   const fetchPaymentRequests = async () => {
     setLoadingPaymentRequests(true);
     try {
       const response = await listAdminPayments();
-      setPaymentRequests(response.data);
+
+      // Ensure we always have an array
+      let paymentData = [];
+
+      if (response.data && Array.isArray(response.data)) {
+        paymentData = response.data;
+      } else if (
+        response.data &&
+        response.data.results &&
+        Array.isArray(response.data.results)
+      ) {
+        // Handle paginated response
+        paymentData = response.data.results;
+      } else if (response.data && typeof response.data === "object") {
+        // Convert object to array if needed
+        paymentData = Object.values(response.data);
+      }
+
+      setPaymentRequests(paymentData);
     } catch (error) {
       console.error("Error fetching payment requests:", error);
       toast.error("Failed to load payment details");
+      // Set empty array on error
+      setPaymentRequests([]);
     } finally {
       setLoadingPaymentRequests(false);
     }
@@ -99,6 +120,11 @@ const OrdersTable = ({
     setSelectedOrder(order);
     setShowQRProof(true);
     setShowDecisionFormInModal(false);
+
+    // Ensure paymentRequests is initialized as array
+    if (!paymentRequests || !Array.isArray(paymentRequests)) {
+      setPaymentRequests([]);
+    }
   };
 
   const handleVerifyPayment = (order) => {
@@ -677,6 +703,7 @@ const OrdersTable = ({
                             Wait {formatRemainingTime(remainingTime)}
                           </button>
                         ) : shouldShowPaymentReminder(order) ||
+                          order.payment_info?.mode === "Unknown" ||
                           order.payment_info?.status === "rejected" ? (
                           <button
                             onClick={() => handleOpenReminderForm(order)}

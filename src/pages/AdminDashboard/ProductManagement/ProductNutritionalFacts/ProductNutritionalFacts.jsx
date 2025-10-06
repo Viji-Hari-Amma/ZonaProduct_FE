@@ -3,11 +3,17 @@ import { toast } from "react-toastify";
 import { FaPlus, FaTrash, FaSave } from "react-icons/fa";
 import {
   bulkAddNutritionalFacts,
+  bulkReplaceNutritionalFacts,
   deleteNutritionalFact,
   listNutritionalFacts,
 } from "../../../../services/productApi/productNutritionalFactsApi/productNutritionalFactsApi";
 
-const ProductNutritionalFacts = ({ productId, onSectionComplete }) => {
+const ProductNutritionalFacts = ({
+  productId,
+  onSectionComplete,
+  isEditing = false,
+}) => {
+  // ADD isEditing prop
   const [nutritionalFacts, setNutritionalFacts] = useState([]);
   const [newFact, setNewFact] = useState({
     component: "",
@@ -86,13 +92,23 @@ const ProductNutritionalFacts = ({ productId, onSectionComplete }) => {
         unit: fact.unit,
       }));
 
+      // USE BULK REPLACE FOR EDITING, BULK ADD FOR CREATING
+      if (isEditing) {
+        await bulkReplaceNutritionalFacts(productId, {
+          nutritional_facts: factsData,
+        });
+        toast.success("Nutritional facts updated successfully");
+      } else {
+        await bulkAddNutritionalFacts(productId, {
+          nutritional_facts: factsData,
+        });
+        toast.success("Nutritional facts saved successfully");
+      }
 
-      await bulkAddNutritionalFacts(productId, {
-        nutritional_facts: factsData,
-      });
-      toast.success("Nutritional facts saved successfully");
       fetchNutritionalFacts(); // Refresh to get actual IDs
-      onSectionComplete(); // ADDED: Move to next section
+      if (onSectionComplete) {
+        onSectionComplete(); // Only call if provided (for creation flow)
+      }
     } catch (error) {
       toast.error("Failed to save nutritional facts");
       console.error("Error saving nutritional facts:", error);
@@ -185,7 +201,7 @@ const ProductNutritionalFacts = ({ productId, onSectionComplete }) => {
       <div className="space-y-3 max-h-60 overflow-y-auto">
         {nutritionalFacts.map((fact, index) => (
           <div
-            key={fact.id}
+            key={fact.id || `temp-${index}`}
             className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border"
           >
             <select
@@ -230,11 +246,13 @@ const ProductNutritionalFacts = ({ productId, onSectionComplete }) => {
             </select>
             <button
               type="button"
-              onClick={() =>
-                fact.id > 1000
-                  ? handleRemoveFact(index)
-                  : handleDeleteFact(fact.id)
-              }
+              onClick={() => {
+                if (fact.id && fact.id > 1000) {
+                  handleDeleteFact(fact.id);
+                } else {
+                  handleRemoveFact(index);
+                }
+              }}
               disabled={deletingId === fact.id}
               className="text-red-500 hover:text-red-700 p-2 transition-colors disabled:opacity-50"
             >
@@ -256,12 +274,14 @@ const ProductNutritionalFacts = ({ productId, onSectionComplete }) => {
 
       {/* Save Button */}
       <div className="flex justify-between pt-4 border-t border-gray-200">
-        <button
-          onClick={onSectionComplete}
-          className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-        >
-          Skip for now
-        </button>
+        {onSectionComplete && (
+          <button
+            onClick={onSectionComplete}
+            className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            Skip for now
+          </button>
+        )}
         <button
           onClick={handleSaveFacts}
           disabled={loading || nutritionalFacts.length === 0}
@@ -270,12 +290,12 @@ const ProductNutritionalFacts = ({ productId, onSectionComplete }) => {
           {loading ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-              Saving...
+              {isEditing ? "Updating..." : "Saving..."}
             </>
           ) : (
             <>
               <FaSave className="mr-2" />
-              Save Facts & Continue
+              {isEditing ? "Update Facts" : "Save Facts & Continue"}
             </>
           )}
         </button>

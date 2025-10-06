@@ -23,3 +23,12 @@ export const deleteSize = (productId, sizeId) =>
 // 6. Bulk add sizes
 export const bulkAddSizes = (productId, data) =>
   axiosInstance.post(`/Product/products/${productId}/sizes/bulk/`, data);
+
+
+export const bulkReplaceSizes = async (productId, sizesData) => {
+  const response = await axiosInstance.post(
+    `/Product/products/${productId}/sizes/bulk-replace/`,
+    sizesData
+  );
+  return response;
+};

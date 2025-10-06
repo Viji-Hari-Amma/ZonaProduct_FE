@@ -282,6 +282,7 @@ const ProductForm = ({ product, onClose, onSave }) => {
               <ProductIngredients
                 productId={currentProductId}
                 onSectionComplete={handleSectionComplete}
+                isEditing={true}
               />
             )}
 
@@ -290,6 +291,7 @@ const ProductForm = ({ product, onClose, onSave }) => {
               <ProductNutritionalFacts
                 productId={currentProductId}
                 onSectionComplete={handleSectionComplete}
+                isEditing={true}
               />
             )}
 
@@ -298,6 +300,7 @@ const ProductForm = ({ product, onClose, onSave }) => {
               <ProductSizes
                 productId={currentProductId}
                 onSectionComplete={handleSectionComplete}
+                isEditing={true}
               />
             )}
 

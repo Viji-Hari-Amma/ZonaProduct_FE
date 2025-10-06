@@ -44,3 +44,12 @@ export const deleteIngredient = (productId, ingredientId) =>
   axiosInstance.delete(
     `/Product/products/${productId}/ingredients/${ingredientId}/`
   );
+
+
+export const bulkReplaceIngredients = async (productId, ingredientsData) => {
+  const response = await axiosInstance.post(
+    `/Product/products/${productId}/ingredients/bulk-replace/`,
+    ingredientsData
+  );
+  return response;
+};
