@@ -181,3 +181,23 @@ export const getRepaymentInfo = (paymentRequestId) =>
   axiosInstance.get(
     `/new-payments/payment-requests/${paymentRequestId}/repayment-info/`
   );
+
+
+  export const createPaymentWithProof = (data) => {
+  const formData = new FormData();
+  
+  // Append all payment data
+  formData.append("order", data.order);
+  formData.append("amount", data.amount);
+  formData.append("mode", data.mode);
+  if (data.notes) formData.append("notes", data.notes);
+  
+  // Append the image file
+  formData.append("upi_proof_image", data.upi_proof_image);
+  
+  return axiosInstance.post(
+    "/new-payments/payment-requests/create-with-proof/",
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+};

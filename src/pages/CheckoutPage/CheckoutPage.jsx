@@ -13,8 +13,8 @@ import {
 } from "../../services/orderApi/orderApi";
 import {
   createPayment,
+  createPaymentWithProof,
   getUPISettings,
-  uploadPaymentProof,
 } from "../../services/paymentApi/paymentApi";
 import AddressFormModal from "../Profile/Forms/AddressFormModal";
 import AddressSelection from "./AddressSelection/AddressSelection";
@@ -239,17 +239,25 @@ const CheckoutPage = () => {
     try {
       setIsLoading(true);
 
-      const paymentData = {
-        order: orderId,
-        amount: Number(totalAmount).toFixed(2), // <-- Fix: round to 2 decimals
-        mode: paymentMethod,
-      };
+      if (paymentMethod === "UPI") {
+        // 🔥 NEW: Use single API call for UPI payments
+        const paymentData = {
+          order: orderId,
+          amount: Number(totalAmount).toFixed(2),
+          mode: paymentMethod,
+          upi_proof_image: screenshot, // Include screenshot in initial request
+        };
 
-      const paymentResponse = await createPayment(paymentData);
-      const payment = paymentResponse.data;
+        await createPaymentWithProof(paymentData);
+      } else {
+        // Keep existing flow for COD
+        const paymentData = {
+          order: orderId,
+          amount: Number(totalAmount).toFixed(2),
+          mode: paymentMethod,
+        };
 
-      if (paymentMethod === "UPI" && screenshot) {
-        await uploadPaymentProof(payment.id, screenshot);
+        await createPayment(paymentData);
       }
 
       setShowPaymentModal(false);
